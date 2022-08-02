@@ -1,0 +1,13 @@
+package com.murugesh1996.productcategory;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ProductcategoryApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProductcategoryApplication.class, args);
+	}
+
+}

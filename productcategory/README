@@ -1,0 +1,45 @@
+APPLICATION_NAME - /dev/product-category-service/APPLICATION_NAME
+SERVER_PORT - /dev/product-category-service/SERVER_PORT
+
+RDS_HOSTNAME - /dev/product-checkout-service/RDS_HOSTNAME
+RDS_PORT - /dev/product-checkout-service/RDS_PORT
+RDS_DB_NAME - /dev/product-checkout-service/RDS_DB_NAME
+RDS_USERNAME - /dev/product-checkout-service/RDS_USERNAME
+RDS_PASSWORD - /dev/product-checkout-service/RDS_PASSWORD
+ALLOWED_ORIGINS - /dev/product-checkout-service/ALLOWED_ORIGINS
+CONFIG_SERVER - /dev/product-checkout-service/CONFIG_SERVER
+
+
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-category-service/APPLICATION_NAME
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-category-service/SERVER_PORT
+
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/RDS_HOSTNAME
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/RDS_PORT
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/RDS_DB_NAME
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/RDS_USERNAME
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/RDS_PASSWORD
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/ALLOWED_ORIGINS
+arn:aws:ssm:ap-south-1:976430960058:parameter/dev/product-checkout-service/CONFIG_SERVER
+
+docker run -dt --name=productcategory -p 8000:8000 murugesh1996/productcategory:0.0.1-SNAPSHOT
+docker run -dt --name=checkoutpurchase -p 8100:8100 murugesh1996/checkoutpurchase:0.0.1-SNAPSHOT
+
+docker tag murugesh1996/checkoutpurchase:0.0.1-SNAPSHOT murugesh1996/checkoutpurchase:latest
+docker tag murugesh1996/productcategory:0.0.1-SNAPSHOT murugesh1996/productcategory:latest
+
+
+docker pull murugesh1996/checkoutpurchase:latest
+
+
+
+http://65.0.74.242:8100/api/checkout-purchase-service/manage/health
+http://43.205.113.69:8000/api/product-category-service/manage/health
+
+http://murugesh1996-ecommerce-lb-1526980251.ap-south-1.elb.amazonaws.com/
+
+http://localhost:8765/CHECKOUT-PURCHASE-SERVICE/api/checkout-purchase-service/orders
+http://localhost:8765/PRODUCT-CATEGORY-SERVICE/api/product-category-service/products
+
+
+
+

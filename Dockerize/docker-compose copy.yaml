@@ -1,0 +1,104 @@
+version: '3'
+services:
+  checkout-purchase-app:
+    container_name: checkout-purchase-app
+    image: murugesh1996/mmv2-checkoutpurchase:0.0.2-SNAPSHOT
+    restart: on-failure
+    ports:
+      - "8100:8100"
+    networks:
+      - ecommerce-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      NAMING_SERVER: http://naming-server:8761/eureka
+      RDS_HOSTNAME: ecommerceappmysql.cqa8hie9e42l.ap-south-1.rds.amazonaws.com
+      RDS_PASSWORD: ecommerceapp
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+
+  product-category-app:
+    container_name: product-category-app
+    image: murugesh1996/mmv2-productcategory:0.0.2-SNAPSHOT
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    networks:
+      - ecommerce-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      NAMING_SERVER: http://naming-server:8761/eureka
+      RDS_HOSTNAME: ecommerceappmysql.cqa8hie9e42l.ap-south-1.rds.amazonaws.com
+      RDS_PASSWORD: ecommerceapp
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+
+  api-gateway:
+    container_name: api-gateway
+    image: murugesh1996/mmv2-apigateway:0.0.2-SNAPSHOT
+    restart: on-failure
+    ports:
+      - "8765:8765"
+    networks:
+      - ecommerce-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      NAMING_SERVER: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+  
+  naming-server:
+    image: murugesh1996/mmv2-namingserver:0.0.2-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    networks:
+      - ecommerce-network
+
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - ecommerce-network
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    restart: always #Restart if there is a problem starting up
+
+  rabbitmq:
+    image: rabbitmq:3.8.12-management
+    mem_limit: 300m
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - ecommerce-network
+
+  ecommerce-frontend:
+    image: murugesh1996/mmv2-angular-ecommerce
+    ports:
+      - "4200:80"
+      - "49153:49153"
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:

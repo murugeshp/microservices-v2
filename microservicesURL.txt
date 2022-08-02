@@ -1,0 +1,22 @@
+http://localhost:8761/
+
+http://localhost:8765/CHECKOUT-PURCHASE-SERVICE/api/checkout-purchase-service/orders
+http://localhost:8765/PRODUCT-CATEGORY-SERVICE/api/product-category-service/products
+
+http://localhost:8765/checkout-purchase-service/orders
+http://localhost:8765/product-category-service/products
+
+
+http://localhost:8765/product-category-service/manage/health
+
+
+http://localhost:8100/checkout-purchase-service/manage/health
+
+
+docker run -dt --name=productcategory -p 8000:8000 murugesh1996/mmv2-productcategory:0.0.2-SNAPSHOT
+docker run -dt --name=checkoutpurchase -p 8100:8100 murugesh1996/mmv2-checkoutpurchase:0.0.2-SNAPSHOT
+docker run -dt --name=namingserver -p 8761:8761 murugesh1996/mmv2-namingserver:0.0.2-SNAPSHOT
+docker run -dt --name=apigateway -p 8765:8765 murugesh1996/mmv2-apigateway:0.0.2-SNAPSHOT
+
+
+9884081579
